@@ -1,0 +1,19 @@
+---
+- name: create a playbook using ansible handlers
+  hosts: db
+  become: true
+  vars_prompt:
+    - name: User
+      prompt: Enter the name of the user?
+      private: yes
+  tasks:
+    - name: use httpd
+      yum:
+        name: httpd
+        state: latest
+      notify: install httpd
+  handler:
+    - name: install httpd
+      service:
+        name: httpd
+        state: started
